@@ -27,7 +27,7 @@ public class PaymentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PaymentResponse> get(@PathVariable String id) {
+    public ResponseEntity<PaymentResponse> get(@PathVariable("id") String id) {
         return service.findById(id)
                 .map(p -> ResponseEntity.ok(new PaymentResponse(
                         p.getId(), p.getAmount(), p.getCurrency(), p.getMerchantId(), p.getStatus(),
