@@ -1,7 +1,7 @@
 package br.com.payments.contracts.enums;
 
 public enum ReasonCode {
-    NOME,
+    NONE,
     INSUFFICIENT_FUNDS,
     SUSPECTED_FRAUD,
     INVALID_TOKEN,
