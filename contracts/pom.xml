@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>br.com.payments</groupId>
-        <artifactId>payment-gateway</artifactId>
+        <artifactId>payment-gateway-simulator</artifactId>
         <version>1.0.0</version>
     </parent>
     <artifactId>contracts</artifactId>
@@ -24,14 +24,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
