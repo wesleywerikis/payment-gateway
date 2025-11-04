@@ -31,8 +31,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!-- 🔧 Versões de plugins centralizadas (evita cair em 2.1.2.RELEASE) -->
     <build>
         <pluginManagement>
             <plugins>
