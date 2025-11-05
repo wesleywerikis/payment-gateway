@@ -1,0 +1,17 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+server:
+  port: 8083
+app:
+  rabbit:
+    exchange: payments.exchange
+    rk:
+      status: payments.status
+      toVerify: payments.to-verify
+    queues:
+      toVerify: payments.to-verify.q
+      status: payments.status.q.antifraud

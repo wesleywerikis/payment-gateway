@@ -2,19 +2,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.payments</groupId>
-    <artifactId>payment-gateway</artifactId>
+    <artifactId>payment-gateway-simulator</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>contracts</module>
         <module>merchant-api</module>
-        <!-- <module>payment-gateway</module>
-        <module>antifraud-worker</module>
-        -->
+        <module>payment-gateway</module>
+        <!--  <module>antifraud-worker</module>
+         -->
     </modules>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
+        <maven.compiler.release>21</maven.compiler.release>
         <spring.boot.version>3.3.4</spring.boot.version>
+        <maven.surefire.version>3.2.5</maven.surefire.version>
+        <maven.failsafe.version>3.2.5</maven.failsafe.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -27,4 +31,36 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <release>${maven.compiler.release}</release>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
