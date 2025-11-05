@@ -8,14 +8,14 @@ import java.math.BigDecimal;
 
 public class CreatePaymentRequest {
 
-    @NotNull
-    @Positive
+    @NotNull(message = "O campo 'amount' é obrigatório.")
+    @Positive(message = "O campo 'amount' deve ser positivo.")
     private BigDecimal amount;
-    @NotBlank
+    @NotBlank(message = "O campo 'currency' é obrigatório.")
     private String currency;
-    @NotBlank
+    @NotBlank(message = "O campo 'cardToken' não pode estar vazio.")
     private String cardToken;
-    @NotBlank
+    @NotBlank(message = "O campo 'merchantId' é obrigatório.")
     private String merchantId;
 
     public BigDecimal getAmount() {
