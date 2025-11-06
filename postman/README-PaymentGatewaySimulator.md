@@ -1,3 +1,4 @@
+
 # 💳 Payment Gateway Simulator
 
 > Projeto educacional e modular que simula o fluxo de um **gateway de pagamentos assíncrono**, aplicando **arquitetura event-driven** com **RabbitMQ** e **Spring Boot 3**.
@@ -5,7 +6,6 @@
 ## 🧠 Visão Geral
 
 A aplicação é composta por **múltiplos microserviços independentes** que se comunicam via **mensageria (AMQP)**, representando o fluxo real de um gateway de pagamentos:
-
 
 | Módulo | Descrição | Status |
 |--------|------------|:------:|
@@ -32,25 +32,25 @@ flowchart LR
 ```
 
 **Fluxo simplificado:**
-1. O lojista cria um pagamento → `merchant-api` publica `payments.created`.
+1. O lojista cria um pagamento → `merchant-api` publica `payments.created`.  
 2. O `payment-gateway` decide:
-    - Valores ≤ R$200 → **APPROVED** direto.
-    - Valores > R$200 → envia para antifraude (`payments.to-verify`).
+   - Valores ≤ R$200 → **APPROVED** direto.  
+   - Valores > R$200 → envia para antifraude (`payments.to-verify`).  
 3. O `antifraud-worker` aplica regras:
-    - Cartão em blacklist, valor > R$2000 ou merchant suspeito → **DECLINED**.
-    - Caso contrário → **APPROVED**.
+   - Cartão em blacklist, valor > R$2000 ou merchant suspeito → **DECLINED**.  
+   - Caso contrário → **APPROVED**.  
 4. O resultado (`payments.status`) retorna ao `merchant-api`, que atualiza o pagamento no banco.
 
 ---
 
 ## 🧱 Stack
 
-- ☕ **Java 21**  
-- 🚀 **Spring Boot 3.3.x**  
-- 💬 **RabbitMQ 3.13 (Management Plugin)**  
+- ☕ **Java 21**
+- 🚀 **Spring Boot 3.3.x**
+- 💬 **RabbitMQ 3.13 (Management Plugin)**
 - 🧩 **Spring AMQP** (event-driven)
-- 🗃️ **Spring Data JPA + H2** (para persistência no `merchant-api`)  
-- 🧰 **Maven Multi-Module**  
+- 🗃️ **Spring Data JPA + H2** (no `merchant-api`)
+- 🧰 **Maven Multi-Module**
 - 🧱 **Docker Compose** (infra RabbitMQ)
 - 🧪 **Postman Collection** (testes automáticos com polling)
 
@@ -106,21 +106,21 @@ curl -X POST http://localhost:8081/payments   -H "Content-Type: application/json
 
 Uma **collection completa** foi criada para validar todos os cenários (inclui polling automático).
 
-📦 Arquivos:
-- `PaymentGatewaySimulator.postman_collection.json`
+📦 Arquivos:  
+- `PaymentGatewaySimulator.postman_collection.json`  
 - `PaymentSimulator.postman_environment.json`
 
 **Casos cobertos:**
 
-| Cenário                          | Valor             | Resultado | Origem |
-|----------------------------------|-------------------|------------|---------|
-| Pagamento direto                 | ≤ R$200           | ✅ APPROVED | Gateway |
-| Antifraude normal                | 201–2000          | ✅ APPROVED | Antifraud |
-| Cartão blacklist                 | qualquer          | ❌ DECLINED | Antifraud |
-| Valor > R$2000                   | >2000             | ❌ DECLINED | Antifraud |
-| Merchant suspeito                | id termina com 999 | ❌ DECLINED | Antifraud |
-| Valor negativo                   | "amount": -10.0       | ⚠️ **HTTP 400 (Bad Request)** — validação de entrada | Merchant API |
-| Token inválido (vazio no evento) | "cardToken": ""   | ⚠️ **ERROR (PaymentStatusEvent)** | Gateway |
+| Cenário | Valor | Resultado | Origem |
+|----------|--------|------------|---------|
+| Pagamento direto | ≤ R$200 | ✅ APPROVED | Gateway |
+| Antifraude normal | 201–2000 | ✅ APPROVED | Antifraud |
+| Cartão blacklist | qualquer | ❌ DECLINED | Antifraud |
+| Valor > R$2000 | >2000 | ❌ DECLINED | Antifraud |
+| Merchant suspeito | id termina com 999 | ❌ DECLINED | Antifraud |
+| Token ausente / valor negativo | — | ⚠️ **HTTP 400 (Bad Request)** — validação de entrada | Merchant API |
+| Token inválido (vazio no evento) | — | ⚠️ **ERROR (PaymentStatusEvent)** | Gateway |
 
 ---
 
@@ -152,11 +152,12 @@ payment-gateway-simulator/
 
 ## 🧭 Roadmap
 
-- ✅ `contracts` — eventos e enums
-- ✅ `merchant-api` — criação e publicação
-- ✅ `payment-gateway` — decisões automáticas
-- ✅ `antifraud-worker` — regras de fraude
-- ✅ Testes completos com Postman
+- ✅ `contracts` — eventos e enums  
+- ✅ `merchant-api` — criação e publicação  
+- ✅ `payment-gateway` — decisões automáticas  
+- ✅ `antifraud-worker` — regras de fraude  
+- ✅ Testes completos com Postman  
+- 🔜 (Futuro) Métricas e health checks (`/actuator`)
 
 ---
 
@@ -165,6 +166,22 @@ payment-gateway-simulator/
 ```
 feature/* → develop → main → tag (release)
 ```
+
+Exemplo:
+```bash
+git checkout main
+git merge --no-ff develop -m "merge: release v1.0.0 - Payment Gateway Simulator"
+git tag -a v1.0.0 -m "release: v1.0.0"
+git push origin main --tags
+```
+
+---
+
+## 🖼️ Prints Sugeridos
+
+- Painel do RabbitMQ com as filas e exchanges.  
+- Logs do antifraud mostrando “SUSPECTED_FRAUD”.  
+- Postman com polling do status até `APPROVED`.
 
 ---
 
